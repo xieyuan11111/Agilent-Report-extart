@@ -1,0 +1,80 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-12-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+M1 <- NormalizeData(M1)
+
+```
+
+```{r}
+VlnPlot(M2, features = "Gab1", group.by = "type_21")
+VlnPlot(M2, features = "Gab1",group.by = "type_21", split.by = "stage")
+```
+
+
+```{r}
+gene_expression <- FetchData(M2, vars = c("Gab1", "type_21"))
+# 指定感兴趣的亚群，例如 'A'
+cluster_of_interest <- '3   LaTP 2'
+
+# 分别获取感兴趣亚群和其他亚群的表达值
+# 使用先前提取的gene_expression数据框
+expr_in_cluster <- gene_expression[gene_expression$type_21 == cluster_of_interest, 'Gab1']
+
+expr_in_others <- gene_expression[gene_expression$type_21 != cluster_of_interest, 'Gab1']
+
+# 进行Wilcoxon秩和检验
+test_result <- wilcox.test(expr_in_cluster, expr_in_others)
+
+# 查看p值
+p_value <- test_result$p.value
+print(paste("P-value:", p_value))
+```
+
+
+```{r}
+gene_expression <- FetchData(M2, vars = c("Gab1", "type_21"))
+# 指定感兴趣的亚群，例如 'A'
+cluster_of_interest <- '2   LaTP'
+
+# 分别获取感兴趣亚群和其他亚群的表达值
+# 使用先前提取的gene_expression数据框
+expr_in_cluster <- gene_expression[gene_expression$type_21 == cluster_of_interest, 'Gab1']
+
+expr_in_others <- gene_expression[gene_expression$type_21 != cluster_of_interest, 'Gab1']
+
+# 进行Wilcoxon秩和检验
+test_result <- wilcox.test(expr_in_cluster, expr_in_others)
+
+# 查看p值
+p_value <- test_result$p.value
+print(paste("P-value:", p_value))
+
+```
+
